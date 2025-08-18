@@ -2,3 +2,5 @@
 /osrm-backend.sif
 /results
 /us-northeast-latest.osm.pbf
+/missing_data
+/complete_data

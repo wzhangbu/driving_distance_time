@@ -24,17 +24,21 @@ import boto3
 from urllib.parse import urlparse
 
 class ReadData:
-    """Class for reading and handling CSV data."""
+    """Class for reading and handling CSV or directory-based parquet data from local or S3."""
     def __init__(self, path, state='NT', directory=False):
         """
-        Initialize the DataReader with a file path.
+        Initialize the ReadData instance.
 
         Args:
-            path (str): Path to the CSV file.
+            path (str): Path to a CSV file or S3 directory.
+            state (str): State filter to apply (default: 'NT').
+            directory (bool): If True, read from an S3 directory of parquet files.
         """
         self.path = path
         self.data = None # Will read the data using the private function _read()
         self.state = state
+
+        # Load data based on the specified mode
         if not directory:
             self._read()
         if directory:
@@ -80,7 +84,12 @@ class ReadData:
         
 
     def preview(self, n=5):
-        """Print the first `n` rows of the data."""
+        """
+        Prints the first `n` rows of the loaded DataFrame.
+
+        Args:
+            n (int): Number of rows to preview (default: 5).
+        """
         print(self.data.head(n))
 
 

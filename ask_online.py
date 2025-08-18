@@ -382,20 +382,26 @@ class DrivingTimeDistanceOSRM:
 
 if __name__ == "__main__":
 
-    n = 1000
+    n = 100
+    	
+
     origins = [(-74.019011, 40.219177)] * n
     destinations = [(-74.00082, 40.2166481)] * n
-
-    random.seed(100) # fix the random seed to compare different methods
-    origins = [(round(random.uniform(-74.02, -74.00), 4), 
-                round(random.uniform(40.20, 40.23), 4)) for _ in range(n)]
-    destinations = [(round(random.uniform(-74.02, -74.00), 4),
-                round( random.uniform(40.20, 40.23), 4)) for _ in range(n)]
+	
+    '''
+    origins = [(-71.0497, 42.36664 )] * n
+    destinations = [(-71.0497036, 42.36669 )] * n
+    '''
+    # random.seed(100) # fix the random seed to compare different methods
+    # origins = [(round(random.uniform(-74.02, -74.00), 4), 
+    #             round(random.uniform(40.20, 40.23), 4)) for _ in range(n)]
+    # destinations = [(round(random.uniform(-74.02, -74.00), 4),
+    #             round( random.uniform(40.20, 40.23), 4)) for _ in range(n)]
 
     url = 'http://router.project-osrm.org/'
 
     # assign the threads
-    threads = 2
+    threads = 1
 
 
     router = DrivingTimeDistanceOSRM(max_threads=threads, osrm_url=url)
@@ -403,11 +409,11 @@ if __name__ == "__main__":
     start_time = time.time()
 
     # No table function, just multi-threads
-    # results = router.compute(origins, destinations)
+    results = router.compute(origins, destinations)
 
     # Use talble function and batch size
     # results = router.route_pairs_table_batched_conc(origins, destinations, batch_size=100, retry=2, max_threads=threads)
-    results = asyncio.run(router.route_pairs_table_async(origins, destinations, batch_size=100, retry=2))
+    # results = asyncio.run(router.route_pairs_table_async(origins, destinations, batch_size=100, retry=2))
     # results = router.route_pairs_table_batched_mp(origins, destinations, batch_size=100, retry=1, max_processes=threads)
 
     print(f'The whole time is {time.time() - start_time}. seconds')
